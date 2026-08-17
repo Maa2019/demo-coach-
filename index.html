@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141F45">
+<title>Lloyd Demo Coach</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+:root{
+  --deep:#141F45; --mid:#1D2C60; --navy:#253C83; --cyan:#26A0DA;
+  --gold:#F2B01E; --red:#EC1F28; --green:#2FA84F;
+  --light:#DCE4F5; --mute:#9BA9CE; --line:#2E3F79;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--deep); color:var(--light);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:15px; line-height:1.5;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+a{color:var(--cyan)}
+.hide{display:none!important}
+
+/* ---------- header ---------- */
+header{
+  position:sticky; top:0; z-index:50; background:var(--deep);
+  border-bottom:1px solid var(--line);
+  padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;
+}
+.hrow{display:flex;align-items:center;gap:10px}
+.flag{width:26px;height:18px;border-radius:2px;overflow:hidden;display:flex;
+  flex-direction:column;flex:0 0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+.flag i{flex:1}
+.flag i:nth-child(1){background:#FF9933}
+.flag i:nth-child(2){background:#fff;position:relative}
+.flag i:nth-child(2)::after{content:"";position:absolute;left:50%;top:50%;
+  width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;
+  border:1px solid #0A2A66}
+.flag i:nth-child(3){background:#138808}
+h1{margin:0;font-size:17px;font-weight:700;color:#fff;letter-spacing:.2px}
+.tag{font-size:11px;color:var(--mute);margin-top:1px}
+.back{background:var(--mid);border:1px solid var(--line);color:var(--light);
+  border-radius:8px;padding:7px 11px;font-size:13px;font-weight:600;cursor:pointer}
+
+/* ---------- home ---------- */
+.wrap{padding:16px;max-width:820px;margin:0 auto}
+.lead{background:var(--mid);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;margin-bottom:18px}
+.lead b{color:#fff}
+.lead p{margin:6px 0 0;font-size:13.5px;color:var(--light)}
+
+.sechead{font-size:11px;letter-spacing:1.6px;color:var(--cyan);font-weight:700;
+  margin:22px 0 10px}
+.grid{display:grid;grid-template-columns:1fr;gap:11px}
+.mcard{background:var(--mid);border:1px solid var(--line);border-radius:12px;
+  padding:14px;display:flex;align-items:center;gap:13px;cursor:pointer;
+  transition:transform .08s}
+.mcard:active{transform:scale(.985)}
+.sz{flex:0 0 auto;width:52px;height:52px;border-radius:10px;display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#141F45}
+.mcard .nm{font-size:16px;font-weight:700;color:#fff}
+.mcard .dt{font-size:12.5px;color:var(--mute);margin-top:2px}
+.chev{margin-left:auto;color:var(--mute);font-size:20px}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;
+  border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;
+  background:var(--deep);-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;background:var(--mid);border:1px solid var(--line);
+  color:var(--mute);border-radius:20px;padding:8px 15px;font-size:13px;
+  font-weight:600;cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--cyan);border-color:var(--cyan);color:#0E1733}
+
+/* ---------- model header ---------- */
+.mhead{background:var(--navy);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.mhead .n{font-size:20px;font-weight:800;color:#fff}
+.mhead .t{font-size:13px;color:var(--light);margin-top:3px;font-style:italic}
+
+/* ---------- blocks ---------- */
+.blk{background:var(--mid);border:1px solid var(--line);border-radius:12px;
+  padding:14px;margin-bottom:12px}
+.blk h3{margin:0 0 10px;font-size:11px;letter-spacing:1.5px;font-weight:700}
+.win h3{color:var(--cyan)} .dem h3{color:var(--gold)}
+.pit h3{color:var(--green)} .obj h3{color:var(--red)}
+
+.wp{display:flex;gap:11px;margin-bottom:13px}
+.wp:last-child{margin-bottom:0}
+.num{flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#141F45}
+.wp .h{font-size:14.5px;font-weight:700;color:#fff}
+.wp .b{font-size:13px;color:var(--light);margin-top:2px}
+
+/* demo steps */
+.step{display:flex;gap:11px;padding:11px;border-radius:10px;background:#16204A;
+  margin-bottom:9px;cursor:pointer;border:1px solid transparent}
+.step:last-child{margin-bottom:0}
+.step.done{background:#123021;border-color:#2FA84F}
+.box{flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:2px solid var(--mute);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  font-weight:800;color:transparent}
+.step.done .box{background:var(--green);border-color:var(--green);color:#fff}
+.step .sl{font-size:10.5px;letter-spacing:1.2px;color:var(--gold);font-weight:700}
+.step.done .sl{color:#7BD79A}
+.step .st{font-size:13.5px;color:var(--light);margin-top:3px}
+
+.say{background:#14322A;border:1px solid #2b5c46;border-radius:10px;
+  padding:12px 13px;margin-bottom:10px}
+.say .q{font-size:15px;color:#fff;font-style:italic;line-height:1.55}
+.say .w{font-size:12.5px;color:#8FCFAE;margin-top:7px}
+
+.ob{background:#16204A;border-radius:10px;padding:12px;margin-bottom:9px}
+.ob .o{font-size:14.5px;font-weight:700;color:var(--gold)}
+.ob .a{font-size:13px;color:#fff;margin-top:5px}
+.ob .n{font-size:12px;color:var(--mute);font-style:italic;margin-top:6px}
+
+/* vs table */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px;
+  border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:12.5px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);
+  white-space:nowrap}
+thead th{background:#0E1733;color:var(--mute);font-size:11px;letter-spacing:.6px;
+  position:sticky;left:0}
+thead th.us{background:#2B4093;color:#fff}
+tbody td:first-child{color:var(--mute)}
+td.us{color:var(--gold);font-weight:700;background:#1A2450}
+tbody tr:last-child td{border-bottom:none}
+
+.note{font-size:12.5px;color:var(--mute);font-style:italic;margin-top:10px;
+  line-height:1.5}
+.warn{background:#3A1418;border:1px solid #6b2229;border-radius:10px;padding:12px;
+  font-size:13px;color:#FFD9DB;margin-top:12px}
+
+.up{background:#2B2010;border:1px solid #6b5220;border-radius:10px;padding:12px;
+  margin-top:12px}
+.up .l{font-size:11px;letter-spacing:1.4px;color:var(--gold);font-weight:700}
+.up .v{font-size:14.5px;color:#fff;font-weight:700;margin-top:5px}
+.up .d{font-size:12.5px;color:var(--light);margin-top:4px}
+
+/* card image */
+.cardimg{width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+.zoomnote{font-size:12px;color:var(--mute);margin-top:8px;text-align:center}
+
+.fl{display:flex;align-items:center;gap:11px;padding:10px 2px;
+  font-size:15px;color:#fff;border-bottom:1px solid #22305F}
+.fl:last-child{border-bottom:none}
+.dot{flex:0 0 auto;width:8px;height:8px;border-radius:50%}
+.reset{width:100%;background:var(--mid);border:1px solid var(--line);
+  color:var(--mute);border-radius:10px;padding:12px;font-size:13px;
+  font-weight:600;cursor:pointer;margin-top:6px}
+footer{padding:22px 16px calc(env(safe-area-inset-bottom) + 26px);text-align:center;
+  font-size:11px;color:#5C6B99;line-height:1.6}
+
+/* ================= ANIMATIONS ================= */
+@media (prefers-reduced-motion: no-preference){
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes slideBack{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.55);opacity:0}60%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+@keyframes sweep{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(38,160,218,0)}50%{box-shadow:0 0 0 6px rgba(38,160,218,.12)}}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+@keyframes barGrow{from{width:0}}
+
+/* home cards stagger in */
+.mcard{animation:fadeUp .42s cubic-bezier(.22,.9,.3,1) both}
+.mcard:nth-child(1){animation-delay:.03s}
+.mcard:nth-child(2){animation-delay:.09s}
+.mcard:nth-child(3){animation-delay:.15s}
+.sechead{animation:fadeIn .5s both}
+.lead{animation:fadeUp .45s cubic-bezier(.22,.9,.3,1) both}
+
+/* screen transitions */
+#detail:not(.hide){animation:slideIn .3s cubic-bezier(.22,.9,.3,1) both}
+#home:not(.hide){animation:slideBack .3s cubic-bezier(.22,.9,.3,1) both}
+.mhead{animation:fadeUp .38s .04s cubic-bezier(.22,.9,.3,1) both}
+
+/* content blocks stagger on every tab switch */
+#dBody>*{animation:fadeUp .34s cubic-bezier(.22,.9,.3,1) both}
+#dBody>*:nth-child(1){animation-delay:.02s}
+#dBody>*:nth-child(2){animation-delay:.09s}
+#dBody>*:nth-child(3){animation-delay:.16s}
+
+/* feature rows cascade */
+.fl{animation:slideIn .3s cubic-bezier(.22,.9,.3,1) both}
+.fl:nth-child(1){animation-delay:.05s} .fl:nth-child(2){animation-delay:.09s}
+.fl:nth-child(3){animation-delay:.13s} .fl:nth-child(4){animation-delay:.17s}
+.fl:nth-child(5){animation-delay:.21s} .fl:nth-child(6){animation-delay:.25s}
+.fl:nth-child(7){animation-delay:.29s} .fl:nth-child(8){animation-delay:.33s}
+.fl:nth-child(9){animation-delay:.37s} .fl:nth-child(10){animation-delay:.41s}
+.fl:nth-child(11){animation-delay:.45s} .fl:nth-child(12){animation-delay:.49s}
+.dot{animation:pop .34s cubic-bezier(.3,1.5,.5,1) both;animation-delay:inherit}
+
+/* demo steps cascade */
+.step{animation:fadeUp .3s cubic-bezier(.22,.9,.3,1) both}
+.step:nth-child(2){animation-delay:.05s} .step:nth-child(3){animation-delay:.10s}
+.step:nth-child(4){animation-delay:.15s} .step:nth-child(5){animation-delay:.20s}
+.step.done{animation:glow .55s ease-out 1}
+.step.done .box{animation:pop .32s cubic-bezier(.3,1.6,.5,1) both}
+
+/* pitch lines */
+.say{animation:fadeUp .34s cubic-bezier(.22,.9,.3,1) both}
+.say:nth-child(2){animation-delay:.07s}
+.ob{animation:fadeUp .32s cubic-bezier(.22,.9,.3,1) both}
+.ob:nth-child(2){animation-delay:.06s} .ob:nth-child(3){animation-delay:.12s}
+
+/* table rows */
+tbody tr{animation:fadeIn .3s both}
+tbody tr:nth-child(2){animation-delay:.03s} tbody tr:nth-child(3){animation-delay:.06s}
+tbody tr:nth-child(4){animation-delay:.09s} tbody tr:nth-child(5){animation-delay:.12s}
+tbody tr:nth-child(6){animation-delay:.15s} tbody tr:nth-child(7){animation-delay:.18s}
+
+/* shine sweep across the model header */
+.mhead{position:relative;overflow:hidden}
+.mhead::after{content:"";position:absolute;top:0;left:0;width:38%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);
+  animation:sweep 1.5s .25s ease-out 1}
+
+/* tap ripple */
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.22);
+  transform:scale(0);animation:ripple .55s ease-out forwards;pointer-events:none}
+.mcard,.step,.tab,.reset{position:relative;overflow:hidden}
+
+/* progress bar */
+.prog{height:5px;border-radius:3px;background:#16204A;overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;border-radius:3px;
+  background:linear-gradient(90deg,#26A0DA,#2FA84F);
+  transition:width .45s cubic-bezier(.22,.9,.3,1);animation:barGrow .6s both}
+}
+/* always-on micro-interactions */
+.mcard,.step,.tab,.reset{transition:transform .12s ease, background .18s ease,
+  border-color .18s ease}
+.mcard:active,.step:active,.reset:active{transform:scale(.975)}
+.tab{transition:background .2s ease,color .2s ease,border-color .2s ease,transform .12s}
+.tab:active{transform:scale(.94)}
+.chev{transition:transform .18s ease}
+.mcard:active .chev{transform:translateX(4px)}
+.cardimg{animation:fadeIn .5s both}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <button class="back hide" id="backBtn">‹ Back</button>
+    <div class="flag"><i></i><i></i><i></i></div>
+    <div style="flex:1;min-width:0">
+      <h1 id="hTitle">Lloyd Demo Coach</h1>
+      <div class="tag" id="hTag">LED TV · Model-wise demo &amp; pitch guide</div>
+    </div>
+  </div>
+</header>
+
+<div id="tabsBar" class="tabs hide"></div>
+
+<div class="wrap">
+  <!-- HOME -->
+  <div id="home">
+    <div class="lead">
+      <b>Tap the model in front of the customer.</b>
+      <p>Features · Demo · Pitch · Compare · Objections</p>
+    </div>
+    <div id="homeList"></div>
+  </div>
+
+  <!-- DETAIL -->
+  <div id="detail" class="hide">
+    <div class="mhead">
+      <div class="n" id="dName"></div>
+      <div class="t" id="dTag"></div>
+    </div>
+    <div id="dBody"></div>
+  </div>
+</div>
+
+<footer>
+  Lloyd &amp; Havells · East Zone Training<br>
+  For internal training use only. Not to be shared outside the organization.
+</footer>
+
+<script>
+/* =====================================================================
+   DATA — five Lloyd models from the battle cards
+   ===================================================================== */
+const MODELS = [
+{
+  id:"ws500", size:"32\"", color:"#26A0DA", card:"img/card-32.jpg",
+  name:"32WS500 / 501",
+  spec:"QLED · WebOS · Dolby Audio",
+  feat:[
+    "QLED display",
+    "WebOS operating system",
+    "HDR10",
+    "Basic / Voice remote",
+    "10W sound",
+    "Dolby Audio"
+  ],
+  demo:[
+    "Same clip on both screens. Saturated colour.",
+    "Open WebOS home. Launch an app. Repeat on rival.",
+    "Match loudness. Play a dialogue scene.",
+    "Hand him the remote."
+  ],
+  pitch:[
+    "32 inch mein QLED milna mushkil hai — rang ka farak khud dekh lijiye.",
+    "Ye wahi WebOS hai jo doosre brand mein hai."
+  ],
+  vs:{ cols:["FEATURE","LLOYD WS500/501","SAMSUNG","LG","SONY","HAIER"],
+    rows:[
+      ["Model","32WS500/501","4570 / 4560 / 4520","32LB651 / LR686","32W835","32S80 / 32A9G"],
+      ["Display","QLED","LED","LED","LED","QLED"],
+      ["Operating System","WebOS","Tizen","WebOS","Google TV","Google TV"],
+      ["HDR / Processor","HDR10","HDR10","Alpha 5","XReality Pro","—"],
+      ["Remote","Basic / Voice","Voice / E-Basic","MMRC / No MMRC","Voice","Voice"],
+      ["Sound","10W Dolby Audio","10W","16W Basic / Atmos","10W Dolby Audio","10W Dolby Audio"]
+    ]},
+  gap:"Sony: better processor. Haier: also QLED.",
+  obj:[
+    ["\"Samsung ka naam hai\"","Woh LED de rahe hain, hum QLED. Clip dono pe chalate hain."],
+    ["\"Service kaisa hai?\"","Havells parentage. Warranty. Nearest service point — name it."]
+  ],
+  up:["32HX600","Same QLED, Google TV instead of WebOS."]
+},
+{
+  id:"hx600", size:"32\"", color:"#F2B01E", card:"img/card-32.jpg",
+  name:"32HX600",
+  spec:"QLED · Google TV · Voice Remote",
+  feat:[
+    "QLED display",
+    "Google TV",
+    "Google Play Store",
+    "Google Voice Assistant",
+    "HDR10",
+    "Voice remote",
+    "10W sound",
+    "Dolby Audio"
+  ],
+  demo:[
+    "Ask his app name. Search it live on Play Store.",
+    "Try the same app on the rival set.",
+    "Give him the remote. Let him speak in his language.",
+    "Saturated clip against rival LED."
+  ],
+  pitch:[
+    "Aap ghar pe kaunsa app dekhte hain? Naam bataiye — abhi search karke dikhaata hoon.",
+    "Remote lijiye, apni bhaasha mein bolke dekhiye."
+  ],
+  vs:{ cols:["FEATURE","LLOYD HX600","SAMSUNG","LG","SONY","HAIER"],
+    rows:[
+      ["Model","32HX600","4570 / 4560 / 4520","32LB651 / LR686","32W835","32S80 / 32A9G"],
+      ["Display","QLED","LED","LED","LED","QLED"],
+      ["Operating System","Google TV","Tizen","WebOS","Google TV","Google TV"],
+      ["HDR / Processor","HDR10","HDR10","Alpha 5","XReality Pro","—"],
+      ["Remote","Voice","Voice / E-Basic","MMRC / No MMRC","Voice","Voice"],
+      ["Sound","10W Dolby Audio","10W","16W Basic / Atmos","10W Dolby Audio","10W Dolby Audio"]
+    ]},
+  gap:"Sony and Haier also run Google TV. Win on the panel, not the OS alone.",
+  obj:[
+    ["\"Tizen bhi theek hai\"","Usmein wahi app jo brand approve kare. Aapka app search karta hoon."],
+    ["\"Mehnga hai\"","Room aur size pehle. Phir dekhiye is size mein kya mil raha hai."]
+  ],
+  up:["43FX600","Same Google TV, one size up. 3 steps or more."]
+},
+{
+  id:"fx600", size:"43\"", color:"#2FA84F", card:"img/card-43.jpg",
+  name:"43FX600",
+  spec:"LED · Google TV · Voice Remote",
+  feat:[
+    "LED display",
+    "Google TV",
+    "Google Voice Assistant",
+    "HDR10",
+    "Voice remote",
+    "Dolby Audio"
+  ],
+  demo:[
+    "Do NOT run the colour test on this model.",
+    "Ask the steps from sofa to wall. 3 steps = 43\".",
+    "Google TV home screen. Hand over the voice remote.",
+    "Bridge up to PS850."
+  ],
+  pitch:[
+    "Aapke room ke hisaab se 43 sahi baithega. Poora Google TV milega.",
+    "Picture quality ek level upar chahiye toh yeh dekhiye —"
+  ],
+  vs:{ cols:["FEATURE","LLOYD FX600","BRAND SS","BRAND L","BRAND H","BRAND S"],
+    rows:[
+      ["Display","LED","4K LED / QLED","4K LED / NanoCell","QLED","4K LED"],
+      ["Operating System","Google TV","Tizen","WebOS","Google TV","Google TV"],
+      ["HDR Support","HDR10","HDR10 / 10+","HDR10","HDR10","HDR10"],
+      ["Remote","Voice Remote","Voice Remote","Basic / MMRC","Voice Remote","Voice Remote"],
+      ["Audio","Dolby Audio","Adaptive Sound","Dolby Atmos","Dolby Atmos","Dolby Atmos"],
+      ["Special","Google TV + Voice","Smart features","AI Picture Enhancer","Realtek HDR","Tizen ecosystem"]
+    ]},
+  gap:"LED against rival QLED. Dolby Audio against rival Atmos. Sell size and ecosystem here — not panel.",
+  obj:[
+    ["\"Isme QLED nahi hai?\"","Sahi. QLED chahiye toh PS850 — sirf ek level upar."],
+    ["\"Atmos doosre brand mein hai\"","Haan. Same volume pe dono sun lijiye."]
+  ],
+  up:["43PS850","QLED Vision Pro + MMRC remote."]
+},
+{
+  id:"ps850", size:"43\"", color:"#EC1F28", card:"img/card-43.jpg",
+  name:"43PS850",
+  spec:"QLED Vision Pro · WebOS · MMRC",
+  feat:[
+    "QLED Vision Pro display",
+    "WebOS operating system",
+    "HDR10",
+    "MMRC remote",
+    "Dolby Audio"
+  ],
+  demo:[
+    "MMRC remote in his hand first. Before any spec.",
+    "Colour test against rival LED. Same clip.",
+    "Open WebOS. Name the ecosystem.",
+    "Dolby Audio last. Match volumes."
+  ],
+  pitch:[
+    "Ye remote ek baar haath mein lijiye, Sir.",
+    "Jo OS doosre brand mein pasand hai, wahi ismein hai — bas panel QLED hai."
+  ],
+  vs:{ cols:["FEATURE","LLOYD PS850","BRAND SS","BRAND L","BRAND H","BRAND S"],
+    rows:[
+      ["Display","QLED Vision Pro","4K LED / QLED","4K LED / NanoCell","QLED","4K LED"],
+      ["Operating System","WebOS","Tizen","WebOS","Google TV","Google TV"],
+      ["HDR Support","HDR10","HDR10 / 10+","HDR10","HDR10","HDR10"],
+      ["Remote","MMRC","Voice Remote","Basic / MMRC","Voice Remote","Voice Remote"],
+      ["Audio","Dolby Audio","Adaptive Sound","Dolby Atmos","Dolby Atmos","Dolby Atmos"],
+      ["Special","QLED Vision Pro + MMRC","Smart features","AI Picture Enhancer","Realtek HDR","Tizen ecosystem"]
+    ]},
+  gap:"Brand L and Brand H carry Dolby Atmos. Win on panel and remote.",
+  obj:[
+    ["\"MMRC kya hota hai?\"","Don't explain. Hand it over."],
+    ["\"Brand L bhi WebOS deta hai\"","Same OS. Ab sirf panel dekhna hai. Clip chalate hain."]
+  ],
+  up:["55QX600","4K, Dolby Vision, Chromecast. 4 steps or more."]
+},
+{
+  id:"qx600", size:"55\"", color:"#26A0DA", card:"img/card-55.jpg",
+  name:"55QX600",
+  spec:"4K QLED · Google TV · Dolby Vision",
+  feat:[
+    "4K QLED display",
+    "4K UHD resolution",
+    "Google TV",
+    "Google Play Store — 10,000+ apps",
+    "Google Assistant built-in",
+    "Chromecast built-in",
+    "HDR10 + Dolby Vision",
+    "Dolby Vision",
+    "24W – 30W audio output",
+    "Dolby Atmos*",
+    "Google Home ecosystem"
+  ],
+  demo:[
+    "Same Dolby Vision title on all three sets.",
+    "Ask for his phone. Cast his family video.",
+    "Search his app on each set.",
+    "Match volume. Bass-heavy scene."
+  ],
+  pitch:[
+    "Sir, phone dijiye — apni koi family video chalayein.",
+    "Teenon pe same movie. Dolby Vision sirf ismein chalega."
+  ],
+  vs:{ cols:["FEATURE","LLOYD 55QX600","BRAND S (QA55QEF1AU)","BRAND L (55QNED65)"],
+    rows:[
+      ["Display Technology","4K QLED","4K QLED","4K QNED"],
+      ["Resolution","4K UHD","4K UHD","4K UHD"],
+      ["Operating System","Google TV","Tizen OS","WebOS"],
+      ["App Availability","Google Play — 10,000+","Limited to Tizen","Limited to WebOS"],
+      ["Voice Assistant","Google Assistant","Bixby &amp; Alexa","ThinQ AI &amp; Alexa"],
+      ["Casting","Chromecast built-in","Smart View","AirPlay 2 / Screen Share"],
+      ["HDR Support","HDR10 + Dolby Vision","HDR10+","HDR10, HLG"],
+      ["Dolby Vision","YES","No","No"],
+      ["Audio Output","24W – 30W","20W","20W"],
+      ["Dolby Atmos","Yes*","Yes","Yes"],
+      ["Smart Home","Google Home","SmartThings","LG ThinQ"]
+    ]},
+  gap:"Both rivals carry Dolby Atmos. Brand L adds NanoCell. *Atmos varies by region and content.",
+  obj:[
+    ["\"Brand L premium hai\"","Same movie, teenon pe. Dolby Vision sirf ismein."],
+    ["\"Ghar pe poochna hai\"","Abhi video call kar lijiye — main dikha deta hoon."]
+  ],
+  up:[null,"Ask about a second screen for the bedroom."]
+}
+];
+
+const SIZE_RULE = [
+  ["2 steps · ~4 ft","32\" – 40\""],
+  ["3 steps · ~6 ft","43\" – 50\""],
+  ["4 steps · ~8 ft","55\" – 65\""],
+  ["5 steps · ~10 ft","65\" – 75\""]
+];
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+let ticks = {};
+try { ticks = JSON.parse(localStorage.getItem("lloyd_demo_ticks") || "{}"); }
+catch(e){ ticks = {}; }
+function saveTicks(){
+  try { localStorage.setItem("lloyd_demo_ticks", JSON.stringify(ticks)); } catch(e){}
+}
+
+
+/* ---- tap ripple ---- */
+function rippleAt(el, ev){
+  try{
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const r = el.getBoundingClientRect();
+    const d = Math.max(r.width, r.height);
+    const s = document.createElement("span");
+    s.className = "rip";
+    s.style.width = s.style.height = d + "px";
+    const x = (ev && ev.clientX ? ev.clientX : r.left + r.width/2) - r.left - d/2;
+    const y = (ev && ev.clientY ? ev.clientY : r.top  + r.height/2) - r.top  - d/2;
+    s.style.left = x + "px"; s.style.top = y + "px";
+    el.appendChild(s);
+    setTimeout(() => s.remove(), 600);
+  }catch(e){}
+}
+function buzz(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+const esc = t => String(t).replace(/&(?!amp;|lt;|gt;|#)/g,"&amp;").replace(/</g,"&lt;");
+
+/* =====================================================================
+   HOME
+   ===================================================================== */
+function renderHome(){
+  const sizes = ["32\"","43\"","55\""];
+  let h = "";
+  sizes.forEach(sz => {
+    h += '<div class="sechead">' + sz + ' RANGE</div><div class="grid">';
+    MODELS.filter(m => m.size === sz).forEach(m => {
+      h += '<div class="mcard" data-id="' + m.id + '">' +
+             '<div class="sz" style="background:' + m.color + '">' + m.size + '</div>' +
+             '<div style="min-width:0"><div class="nm">' + esc(m.name) + '</div>' +
+             '<div class="dt">' + esc(m.spec) + '</div></div>' +
+             '<div class="chev">›</div></div>';
+    });
+    h += '</div>';
+  });
+
+  h += '<div class="sechead">SIZE LADDER — ASK BEFORE YOU PITCH</div><div class="blk">' +
+       '<div style="font-size:13px;color:var(--light);margin-bottom:11px">' +
+       '"Sofa se deewar tak kitne kadam?" One step \u2248 2 feet.</div>';
+  SIZE_RULE.forEach((r,i) => {
+    h += '<div style="display:flex;justify-content:space-between;padding:9px 11px;' +
+         'border-radius:8px;margin-bottom:6px;background:' +
+         (i>=2 ? '#2B4093' : '#16204A') + '">' +
+         '<span style="font-size:13px;color:var(--light)">' + r[0] + '</span>' +
+         '<span style="font-size:14px;font-weight:800;color:' +
+         (i>=2 ? 'var(--gold)' : '#fff') + '">' + r[1] + '</span></div>';
+  });
+  h += '</div>';
+
+  $("homeList").innerHTML = h;
+  document.querySelectorAll(".mcard").forEach(el => {
+    el.onclick = ev => { rippleAt(el, ev); setTimeout(() => openModel(el.dataset.id), 130); };
+  });
+}
+
+/* =====================================================================
+   DETAIL
+   ===================================================================== */
+let current = null, tab = "demo";
+const TABS = [
+  ["feat","Features"], ["demo","Demo"], ["pitch","Pitch"],
+  ["vs","Compare"], ["obj","Objections"], ["card","Card"]
+];
+
+function openModel(id){
+  current = MODELS.find(m => m.id === id);
+  tab = "feat";
+  $("home").classList.add("hide");
+  $("detail").classList.remove("hide");
+  $("backBtn").classList.remove("hide");
+  $("tabsBar").classList.remove("hide");
+  $("hTitle").textContent = "Lloyd " + current.name;
+  $("hTag").textContent = current.spec;
+  $("dName").textContent = "LLOYD " + current.name;
+  $("dTag").textContent = current.tag;
+  renderTabs(); renderBody();
+  window.scrollTo(0,0);
+}
+
+function goHome(){
+  current = null;
+  $("detail").classList.add("hide");
+  $("home").classList.remove("hide");
+  $("backBtn").classList.add("hide");
+  $("tabsBar").classList.add("hide");
+  $("hTitle").textContent = "Lloyd Demo Coach";
+  $("hTag").textContent = "LED TV · Model-wise demo & pitch guide";
+  window.scrollTo(0,0);
+}
+$("backBtn").onclick = goHome;
+
+function renderTabs(){
+  $("tabsBar").innerHTML = TABS.map(t =>
+    '<button class="tab' + (t[0]===tab ? ' on':'') + '" data-t="' + t[0] + '">' +
+    t[1] + '</button>').join("");
+  document.querySelectorAll(".tab").forEach(b => {
+    b.onclick = ev => { rippleAt(b, ev); tab = b.dataset.t; renderTabs(); renderBody();
+      window.scrollTo({top:0, behavior:"smooth"}); };
+  });
+}
+
+function renderBody(){
+  const m = current; let h = "";
+
+  if (tab === "feat"){
+    h += '<div class="blk win"><h3>FEATURES</h3>';
+    m.feat.forEach(f => {
+      h += '<div class="fl"><span class="dot" style="background:' + m.color +
+           '"></span>' + esc(f) + '</div>';
+    });
+    h += '</div>';
+    h += '<div class="warn"><b>Gap</b><br>' + esc(m.gap) + '</div>';
+    if (m.up[0]) {
+      h += '<div class="up"><div class="l">ONE STEP UP</div>' +
+           '<div class="v">Lloyd ' + esc(m.up[0]) + '</div>' +
+           '<div class="d">' + esc(m.up[1]) + '</div></div>';
+    } else {
+      h += '<div class="up"><div class="l">NEXT</div>' +
+           '<div class="d" style="margin-top:5px">' + esc(m.up[1]) + '</div></div>';
+    }
+  }
+
+  if (tab === "demo"){
+    const key = m.id;
+    ticks[key] = ticks[key] || [];
+    h += '<div class="blk dem"><h3>DEMO — IN THIS ORDER</h3>';
+    m.demo.forEach((d,i) => {
+      const on = ticks[key].indexOf(i) > -1;
+      h += '<div class="step' + (on?' done':'') + '" data-i="' + i + '">' +
+           '<div class="box">\u2713</div><div style="min-width:0">' +
+           '<div class="sl">STEP ' + (i+1) + '</div>' +
+           '<div class="st">' + esc(d) + '</div></div></div>';
+    });
+    const pct = Math.round(ticks[key].length / m.demo.length * 100);
+    h += '<div class="prog"><i style="width:' + pct + '%"></i></div>' +
+         '<div style="font-size:12px;color:var(--mute);margin-top:7px">' +
+         ticks[key].length + ' of ' + m.demo.length + ' steps done' +
+         (pct === 100 ? '  \u2713  Demo complete' : '') + '</div>';
+    h += '</div><button class="reset" id="resetBtn">Reset steps</button>';
+  }
+
+  if (tab === "pitch"){
+    h += '<div class="blk pit"><h3>SAY THIS</h3>';
+    m.pitch.forEach(p => {
+      h += '<div class="say"><div class="q">\u201C' + esc(p) + '\u201D</div></div>';
+    });
+    h += '</div>';
+    h += '<div class="blk"><h3 style="color:var(--cyan)">FOUR BEATS</h3>' +
+         '<div style="font-size:14px;line-height:1.9">' +
+         '<b style="color:#fff">HOOK</b> \u2014 a question<br>' +
+         '<b style="color:#fff">PROOF</b> \u2014 show it<br>' +
+         '<b style="color:#fff">GAIN</b> \u2014 his room<br>' +
+         '<b style="color:#fff">CLOSE</b> \u2014 one rung up' +
+         '</div></div>';
+  }
+
+  if (tab === "vs"){
+    h += '<div class="blk"><h3 style="color:var(--cyan)">COMPARISON</h3>' +
+         '<div class="tw"><table><thead><tr>';
+    m.vs.cols.forEach((c,i) => {
+      h += '<th class="' + (i===1?'us':'') + '">' + c + '</th>';
+    });
+    h += '</tr></thead><tbody>';
+    m.vs.rows.forEach(r => {
+      h += '<tr>';
+      r.forEach((c,i) => { h += '<td class="' + (i===1?'us':'') + '">' + c + '</td>'; });
+      h += '</tr>';
+    });
+    h += '</tbody></table></div></div>';
+    h += '<div class="warn"><b>Gap</b><br>' + esc(m.gap) + '</div>';
+  }
+
+  if (tab === "obj"){
+    h += '<div class="blk obj"><h3>OBJECTIONS</h3>';
+    m.obj.forEach(o => {
+      h += '<div class="ob"><div class="o">' + esc(o[0]) + '</div>' +
+           '<div class="a">' + esc(o[1]) + '</div></div>';
+    });
+    h += '</div>';
+  }
+
+  if (tab === "card"){
+    h += '<div class="blk"><h3 style="color:var(--cyan)">' + m.size +
+         ' BATTLE CARD</h3><img class="cardimg" src="' + m.card +
+         '" alt="Lloyd ' + m.size + ' card">' +
+         '<div class="zoomnote">Pinch to zoom. Internal reference.</div></div>';
+  }
+
+  $("dBody").innerHTML = h;
+
+  if (tab === "demo"){
+    document.querySelectorAll(".step").forEach(el => {
+      el.onclick = ev => {
+        rippleAt(el, ev);
+        const i = +el.dataset.i, k = current.id;
+        ticks[k] = ticks[k] || [];
+        const p = ticks[k].indexOf(i);
+        if (p > -1) ticks[k].splice(p,1); else { ticks[k].push(i); buzz(12); }
+        saveTicks(); renderBody();
+      };
+    });
+    const rb = $("resetBtn");
+    if (rb) rb.onclick = () => { ticks[current.id] = []; saveTicks(); renderBody(); };
+  }
+}
+
+renderHome();
+
+if ("serviceWorker" in navigator){
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
