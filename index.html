@@ -430,26 +430,26 @@ const MODELS = [
       ["Model","32WS500/501","4570 / 4560 / 4520","32LB651 / LR686","32W835","32S80 / 32A9G"],
       ["Display","QLED","LED","LED","LED","QLED"],
       ["Operating System","WebOS","Tizen","WebOS","Google TV","Google TV"],
-      ["HDR / Processor","HDR10","HDR10","Alpha 5","XReality Pro","—"],
+      ["HDR / Processor","HDR10","HDR10 (10+ on 4570)","Alpha 5","XReality Pro","—"],
       ["Remote","Basic / Voice","Voice / E-Basic","MMRC / No MMRC","Voice","Voice"],
-      ["Sound","10W Dolby Audio","10W","16W Basic / Atmos","10W Dolby Audio","10W Dolby Audio"]
+      ["Sound","10W Dolby Audio","10W","16W Basic","10W Dolby Audio","10W Dolby Audio"]
     ]},
-  gap:"Sony: better processor. Haier: also QLED.",
+  gap:"Sony: better processor. Haier: also QLED. LG: higher 16W output.",
   obj:[
     ["\"Samsung ka naam hai\"","Woh LED de rahe hain, hum QLED. Clip dono pe chalate hain."],
     ["\"Service kaisa hai?\"","Havells parentage. Warranty. Nearest service point — name it."]
   ],
-  up:["32HX600","Same QLED, Google TV instead of WebOS."]
+  up:["32HX600","Google TV and the open Play Store, if he wants the app ecosystem over the QLED panel."]
 },
 {
   id:"hx600",
-  osKind:"google", osLabel:"GOOGLE TV", focus:4, badge:"QLED",
+  osKind:"google", osLabel:"GOOGLE TV", focus:4, badge:"GOOGLE TV",
   wash:"linear-gradient(125deg,#123A8A,#2A7FD4 32%,#37C2A6 58%,#F2B01E 82%,#EC5A28)",
-  hi:["QLED|QUANTUM DOT DISPLAY","GOOGLE TV|OPEN ECOSYSTEM","PLAY STORE|10,000+ APPS","VOICE REMOTE|GOOGLE ASSISTANT"], size:"32\"", color:"#F2B01E", card:CARD32,
+  hi:["GOOGLE TV|OPEN ECOSYSTEM","PLAY STORE|10,000+ APPS","VOICE REMOTE|GOOGLE ASSISTANT","DOLBY AUDIO|10W SOUND OUTPUT"], size:"32\"", color:"#F2B01E", card:CARD32,
   name:"32HX600",
-  spec:"QLED · Google TV · Voice Remote",
+  spec:"LED · Google TV · Voice Remote",
   feat:[
-    "QLED display",
+    "LED display",
     "Google TV",
     "Google Play Store",
     "Google Voice Assistant",
@@ -459,10 +459,10 @@ const MODELS = [
     "Dolby Audio"
   ],
   demo:[
+    "Do NOT run the colour test. This is an LED panel.",
     "Ask his app name. Search it live on Play Store.",
-    "Try the same app on the rival set.",
-    "Give him the remote. Let him speak in his language.",
-    "Saturated clip against rival LED."
+    "Try the same app on the rival closed ecosystem.",
+    "Give him the remote. Let him speak in his language."
   ],
   pitch:[
     "Aap ghar pe kaunsa app dekhte hain? Naam bataiye — abhi search karke dikhaata hoon.",
@@ -471,18 +471,18 @@ const MODELS = [
   vs:{ cols:["FEATURE","LLOYD HX600","SAMSUNG","LG","SONY","HAIER"],
     rows:[
       ["Model","32HX600","4570 / 4560 / 4520","32LB651 / LR686","32W835","32S80 / 32A9G"],
-      ["Display","QLED","LED","LED","LED","QLED"],
+      ["Display","LED","LED","LED","LED","QLED"],
       ["Operating System","Google TV","Tizen","WebOS","Google TV","Google TV"],
-      ["HDR / Processor","HDR10","HDR10","Alpha 5","XReality Pro","—"],
+      ["HDR / Processor","HDR10","HDR10 (10+ on 4570)","Alpha 5","XReality Pro","—"],
       ["Remote","Voice","Voice / E-Basic","MMRC / No MMRC","Voice","Voice"],
-      ["Sound","10W Dolby Audio","10W","16W Basic / Atmos","10W Dolby Audio","10W Dolby Audio"]
+      ["Sound","10W Dolby Audio","10W","16W Basic","10W Dolby Audio","10W Dolby Audio"]
     ]},
-  gap:"Sony and Haier also run Google TV. Win on the panel, not the OS alone.",
+  gap:"LED panel here \u2014 and Haier fields QLED. Sony and Haier also run Google TV. Win on the open Play Store and voice remote, not the panel. For a QLED customer move to 32WS500/501.",
   obj:[
-    ["\"Tizen bhi theek hai\"","Usmein wahi app jo brand approve kare. Aapka app search karta hoon."],
-    ["\"Mehnga hai\"","Room aur size pehle. Phir dekhiye is size mein kya mil raha hai."]
+    ["\"Isme QLED nahi hai?\"","Sahi Sir, isme LED hai. QLED chahiye toh 32WS500 dekhiye \u2014 QLED plus WebOS."],
+    ["\"Tizen bhi theek hai\"","Usmein wahi app jo brand approve kare. Aapka app search karta hoon."]
   ],
-  up:["43FX600","Same Google TV, one size up. 3 steps or more."]
+  up:["32WS500/501","QLED panel with WebOS, if he wants the better display."]
 },
 {
   id:"fx600",
@@ -516,9 +516,9 @@ const MODELS = [
       ["HDR Support","HDR10","HDR10 / 10+","HDR10","HDR10","HDR10"],
       ["Remote","Voice Remote","Voice Remote","Basic / MMRC","Voice Remote","Voice Remote"],
       ["Audio","Dolby Audio","Adaptive Sound","Dolby Atmos","Dolby Atmos","Dolby Atmos"],
-      ["Special","Google TV + Voice","Smart features","AI Picture Enhancer","Realtek HDR","Tizen ecosystem"]
+      ["Special","Google TV + Voice","Smart features","AI Picture Enhancer","Realtek HDR","Smart features"]
     ]},
-  gap:"LED against rival QLED. Dolby Audio against rival Atmos. Sell size and ecosystem here — not panel.",
+  gap:"LED panel \u2014 Brand H fields QLED and Brand SS offers QLED on some SKUs. Three rivals carry Dolby Atmos. Sell size and ecosystem here, not the panel, then bridge to PS850.",
   obj:[
     ["\"Isme QLED nahi hai?\"","Sahi. QLED chahiye toh PS850 — sirf ek level upar."],
     ["\"Atmos doosre brand mein hai\"","Haan. Same volume pe dono sun lijiye."]
@@ -556,9 +556,9 @@ const MODELS = [
       ["HDR Support","HDR10","HDR10 / 10+","HDR10","HDR10","HDR10"],
       ["Remote","MMRC","Voice Remote","Basic / MMRC","Voice Remote","Voice Remote"],
       ["Audio","Dolby Audio","Adaptive Sound","Dolby Atmos","Dolby Atmos","Dolby Atmos"],
-      ["Special","QLED Vision Pro + MMRC","Smart features","AI Picture Enhancer","Realtek HDR","Tizen ecosystem"]
+      ["Special","QLED Vision Pro + MMRC","Smart features","AI Picture Enhancer","Realtek HDR","Smart features"]
     ]},
-  gap:"Brand L and Brand H carry Dolby Atmos. Win on panel and remote.",
+  gap:"Brand L, Brand H and Brand S all carry Dolby Atmos \u2014 we carry Dolby Audio. Win on the QLED Vision Pro panel and the MMRC remote, both of which he can see and hold.",
   obj:[
     ["\"MMRC kya hota hai?\"","Don't explain. Hand it over."],
     ["\"Brand L bhi WebOS deta hai\"","Same OS. Ab sirf panel dekhna hai. Clip chalate hain."]
@@ -605,7 +605,7 @@ const MODELS = [
       ["Casting","Chromecast built-in","Smart View","AirPlay 2 / Screen Share"],
       ["HDR Support","HDR10 + Dolby Vision","HDR10+","HDR10, HLG"],
       ["Dolby Vision","YES","No","No"],
-      ["Audio Output","24W – 30W","20W","20W"],
+      ["Audio Output","24W – 30W","20W","20W (AI Sound Pro 9.1.2)"],
       ["Dolby Atmos","Yes*","Yes","Yes"],
       ["Smart Home","Google Home","SmartThings","LG ThinQ"]
     ]},
